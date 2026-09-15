@@ -1112,6 +1112,8 @@ document.getElementById('yearTag').textContent = new Date().getFullYear();
 /* ============================================================
    COUNTDOWN + BIRTHDAY-DAY DETECTION
    ============================================================ */
+const overlay = document.getElementById('celebrate');
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const parts = CONFIG.birthday.split('-').map(Number);
 const BIRTH_MONTH = parts[1] - 1, BIRTH_DAY = parts[2];
 
@@ -1209,7 +1211,7 @@ function burst(x, y, count = 90, power = 1){
   if (!raf) raf = requestAnimationFrame(loop);
 }
 
-const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 
 function loop(){
   ctx.clearRect(0, 0, innerWidth, innerHeight);
@@ -1329,7 +1331,7 @@ function bigBurst(){
 /* ============================================================
    CELEBRATION OVERLAY
    ============================================================ */
-const overlay = document.getElementById('celebrate');
+
 function celebrate(withOverlay = true){
   if (withOverlay){
     overlay.classList.add('on');
