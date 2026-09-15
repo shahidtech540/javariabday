@@ -1110,72 +1110,11 @@ setTimeout(() => document.body.classList.add('loaded'), 2500); // safety net
 document.getElementById('yearTag').textContent = new Date().getFullYear();
 
 /* ============================================================
-   COUNTDOWN + BIRTHDAY-DAY DETECTION
-   ============================================================ */
-const overlay = document.getElementById('celebrate');
-const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const parts = CONFIG.birthday.split('-').map(Number);
-const BIRTH_MONTH = parts[1] - 1, BIRTH_DAY = parts[2];
-
-const pad = n => String(n).padStart(2, '0');
-const el = { d:document.getElementById('d'), h:document.getElementById('h'),
-             m:document.getElementById('m'), s:document.getElementById('s'),
-             label:document.getElementById('cdLabel'), note:document.getElementById('cdNote') };
-
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-/* Next midnight that starts her birthday. If it already happened this year,
-   roll to next year. */
-function nextTarget(now){
-  let y = now.getFullYear();
-  let t = new Date(y, BIRTH_MONTH, BIRTH_DAY, 0, 0, 0, 0);
-  if (t.getTime() <= now.getTime()) t = new Date(y + 1, BIRTH_MONTH, BIRTH_DAY, 0, 0, 0, 0);
-  return t;
-}
-
-function isBirthdayToday(now){
-  return now.getMonth() === BIRTH_MONTH && now.getDate() === BIRTH_DAY;
-}
-
-let target = nextTarget(new Date());
-let firedCelebration = false;
-
-function tick(){
-  const now = new Date();
-
-  // It IS her birthday right now → celebration mode
-  if (isBirthdayToday(now)){
-    document.body.classList.add('is-birthday');
-    if (!firedCelebration){ firedCelebration = true; celebrate(true); }
-    return;
-  }
-  document.body.classList.remove('is-birthday');
-
-  const diff = target - now;
-
-  if (diff <= 0){                       // ⏰ countdown hit zero
-    firedCelebration = true;
-    celebrate(true);
-    target = nextTarget(new Date());    // roll to next year for future visits
-    return;
-  }
-
-  const secs = Math.floor(diff / 1000);
-  el.d.textContent = pad(Math.floor(secs / 86400));
-  el.h.textContent = pad(Math.floor(secs % 86400 / 3600));
-  el.m.textContent = pad(Math.floor(secs % 3600 / 60));
-  el.s.textContent = pad(secs % 60);
-
-  el.note.textContent = `Midnight, ${BIRTH_DAY} ${MONTHS[BIRTH_MONTH]} — the exact second 19 begins.`;
-  if (diff < 86400000) el.label.textContent = 'Less than a day to go 👀';
-}
-tick();
-setInterval(tick, 1000);
-
-/* ============================================================
    CONFETTI ENGINE (hand-rolled, no libraries)
    Only used for the countdown-zero burst + the balloon button.
    ============================================================ */
+const overlay = document.getElementById('celebrate');
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cvs = document.getElementById('confetti');
 const ctx = cvs.getContext('2d');
 let bits = [], raf = null;
@@ -1351,6 +1290,68 @@ document.getElementById('closeCelebrate').addEventListener('click', dismissCeleb
 overlay.addEventListener('click', e => { if (e.target === overlay) dismissCelebrate(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') dismissCelebrate(); });
 document.getElementById('replayBtn').addEventListener('click', () => { bigBurst(); toast('Again? Again. 🎊'); });
+
+
+/* ============================================================
+   COUNTDOWN + BIRTHDAY-DAY DETECTION
+   ============================================================ */
+const parts = CONFIG.birthday.split('-').map(Number);
+const BIRTH_MONTH = parts[1] - 1, BIRTH_DAY = parts[2];
+
+const pad = n => String(n).padStart(2, '0');
+const el = { d:document.getElementById('d'), h:document.getElementById('h'),
+             m:document.getElementById('m'), s:document.getElementById('s'),
+             label:document.getElementById('cdLabel'), note:document.getElementById('cdNote') };
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+/* Next midnight that starts her birthday. If it already happened this year,
+   roll to next year. */
+function nextTarget(now){
+  let y = now.getFullYear();
+  let t = new Date(y, BIRTH_MONTH, BIRTH_DAY, 0, 0, 0, 0);
+  if (t.getTime() <= now.getTime()) t = new Date(y + 1, BIRTH_MONTH, BIRTH_DAY, 0, 0, 0, 0);
+  return t;
+}
+
+function isBirthdayToday(now){
+  return now.getMonth() === BIRTH_MONTH && now.getDate() === BIRTH_DAY;
+}
+
+let target = nextTarget(new Date());
+let firedCelebration = false;
+
+function tick(){
+  const now = new Date();
+
+  // It IS her birthday right now → celebration mode
+  if (isBirthdayToday(now)){
+    document.body.classList.add('is-birthday');
+    if (!firedCelebration){ firedCelebration = true; celebrate(true); }
+    return;
+  }
+  document.body.classList.remove('is-birthday');
+
+  const diff = target - now;
+
+  if (diff <= 0){                       // ⏰ countdown hit zero
+    firedCelebration = true;
+    celebrate(true);
+    target = nextTarget(new Date());    // roll to next year for future visits
+    return;
+  }
+
+  const secs = Math.floor(diff / 1000);
+  el.d.textContent = pad(Math.floor(secs / 86400));
+  el.h.textContent = pad(Math.floor(secs % 86400 / 3600));
+  el.m.textContent = pad(Math.floor(secs % 3600 / 60));
+  el.s.textContent = pad(secs % 60);
+
+  el.note.textContent = `Midnight, ${BIRTH_DAY} ${MONTHS[BIRTH_MONTH]} — the exact second 19 begins.`;
+  if (diff < 86400000) el.label.textContent = 'Less than a day to go 👀';
+}
+tick();
+setInterval(tick, 1000);
 
 /* ============================================================
    SCROLL-TRIGGERED REVEALS
