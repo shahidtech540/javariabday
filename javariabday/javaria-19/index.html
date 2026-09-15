@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Happy 19th Birthday, Javaria</title>
+<meta name="description" content="A little corner of the internet built just for Javaria's 19th." />
+
+<!-- ============================================================
+     FONTS  (display: Bricolage Grotesque / body: DM Sans)
+     Falls back gracefully if offline.
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   0. DESIGN TOKENS  — edit these to re-skin the whole page
+   ============================================================ */
+:root{
+  --cream:      #FFF4E4;   /* page background           */
+  --cream-deep: #FFE9CE;   /* soft secondary surface    */
+  --pink:       #FF2E7E;   /* PRIMARY bold accent       */
+  --orange:     #FF7A1A;   /* SECONDARY bold accent     */
+  --lime:       #C7F04A;   /* tiny pop accent (sparingly)*/
+  --plum:       #43103C;   /* deep contrast / footer    */
+  --ink:        #26111F;   /* body text                 */
+
+  --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body:    "DM Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --radius: 26px;
+  --max: 1120px;
+  --ease: cubic-bezier(.19,1,.22,1);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:clamp(16px,1.05vw + 13px,18px);
+  line-height:1.65;
+  overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+img{ max-width:100%; display:block; }
+button{ font:inherit; color:inherit; }
+::selection{ background:var(--pink); color:var(--cream); }
+
+.wrap{ width:min(100% - 2.6rem, var(--max)); margin-inline:auto; }
+@media (max-width:640px){ .wrap{ width:min(100% - 1.5rem, var(--max)); } }
+
+/* ============================================================
+   1. BACKGROUND FLOATERS + NOISE (subtle, non-distracting)
+   ============================================================ */
+.bg-shapes{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.blob{ position:absolute; border-radius:50%; filter:blur(38px); opacity:.42; }
+.blob.b1{ width:44vw; height:44vw; left:-12vw; top:6vh;  background:var(--pink);   animation:drift1 26s ease-in-out infinite alternate; }
+.blob.b2{ width:38vw; height:38vw; right:-10vw; top:44vh; background:var(--orange); animation:drift2 31s ease-in-out infinite alternate; }
+.blob.b3{ width:30vw; height:30vw; left:22vw; bottom:-12vw; background:var(--lime);  opacity:.3; animation:drift1 38s ease-in-out infinite alternate-reverse; }
+@keyframes drift1{ to{ transform:translate3d(6vw,-5vh,0) scale(1.12);} }
+@keyframes drift2{ to{ transform:translate3d(-7vw,6vh,0) scale(.9);} }
+
+.dot-field{ position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:radial-gradient(rgba(38,17,31,.13) 1.1px, transparent 1.2px);
+  background-size:26px 26px; opacity:.5; }
+
+canvas#confetti{ position:fixed; inset:0; z-index:80; pointer-events:none; }
+
+/* ============================================================
+   2. PAGE-LOAD CURTAIN
+   ============================================================ */
+#curtain{
+  position:fixed; inset:0; z-index:120; background:var(--pink);
+  display:grid; place-items:center; transition:transform 1s var(--ease), opacity .5s ease .45s;
+}
+#curtain span{
+  font-family:var(--display); font-weight:800; color:var(--cream);
+  font-size:clamp(3.4rem,17vw,9rem); line-height:.85; letter-spacing:-.04em;
+}
+body.loaded #curtain{ transform:translateY(-101%); opacity:0; pointer-events:none; }
+
+/* ============================================================
+   3. MARQUEE RIBBON (top ticker)
+   ============================================================ */
+.ribbon-clip{ overflow:hidden; padding:16px 0; margin:-16px 0; position:relative; z-index:2; }
+.ribbon{
+  position:relative; background:var(--ink); color:var(--cream);
+  border-bottom:3px solid var(--ink); overflow:hidden; padding:.55rem 0;
+  transform:rotate(-1.1deg) scale(1.03); margin-top:-.2rem;
+}
+.ribbon-track{ display:flex; gap:2.4rem; width:max-content; animation:slide 26s linear infinite; }
+.ribbon span{ font-family:var(--display); font-weight:700; font-size:.82rem; letter-spacing:.22em; text-transform:uppercase; white-space:nowrap; }
+.ribbon i{ color:var(--lime); font-style:normal; }
+@keyframes slide{ to{ transform:translateX(-50%);} }
+
+/* ============================================================
+   4. HERO
+   ============================================================ */
+main{ position:relative; z-index:1; }
+.hero{ padding:clamp(2.6rem,7vh,5.5rem) 0 clamp(3rem,8vh,6rem); position:relative; }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.55rem;
+  background:var(--cream); border:2.5px solid var(--ink);
+  border-radius:999px; padding:.42rem 1rem .42rem .7rem;
+  font-weight:700; font-size:.74rem; letter-spacing:.16em; text-transform:uppercase;
+  box-shadow:4px 4px 0 var(--ink); transform:rotate(-2deg);
+}
+.eyebrow b{ width:.62rem; height:.62rem; border-radius:50%; background:var(--pink); animation:blip 1.6s ease-in-out infinite; }
+@keyframes blip{ 50%{ transform:scale(.4); opacity:.4; } }
+
+.hero h1{
+  font-family:var(--display); font-weight:800;
+  font-size:clamp(3rem,12.5vw,8.2rem); line-height:.86; letter-spacing:-.045em;
+  margin:1.3rem 0 0; text-wrap:balance;
+}
+.hero h1 .l1{ display:block; color:var(--ink); }
+.hero h1 .l2{ display:block; color:var(--pink); }
+.hero h1 .l3{ display:block; position:relative; width:max-content; max-width:100%; }
+.hero h1 .name{
+  display:inline-block; position:relative; color:var(--orange);
+  text-shadow:3px 3px 0 var(--ink);
+}
+.hero h1 .nineteen{
+  font-family:var(--display); font-weight:800; color:var(--cream);
+  background:var(--ink); border-radius:20px; padding:0 .18em .06em;
+  display:inline-block; transform:rotate(-3.5deg);
+  box-shadow:7px 7px 0 var(--pink);
+}
+.sticker{
+  position:absolute; left:100%; top:-1.6rem; margin-left:1.2rem; width:clamp(74px,13vw,132px); aspect-ratio:1;
+  display:grid; place-items:center; text-align:center;
+  background:var(--lime); color:var(--ink); border:3px solid var(--ink);
+  border-radius:50%; font-family:var(--display); font-weight:800;
+  font-size:clamp(.6rem,1.5vw,.85rem); letter-spacing:.1em; text-transform:uppercase; line-height:1.15;
+  transform:rotate(11deg); box-shadow:5px 5px 0 var(--ink); animation:wobble 7s ease-in-out infinite;
+}
+@keyframes wobble{ 0%,100%{transform:rotate(11deg)} 50%{transform:rotate(-6deg) translateY(-6px)} }
+@media (max-width:520px){
+  .sticker{
+    position:static; display:inline-grid; width:60px; aspect-ratio:1;
+    margin-left:.6rem; vertical-align:.35rem; font-size:.52rem;
+    box-shadow:3px 3px 0 var(--ink); border-width:2.5px;
+  }
+}
+
+.lede{
+  max-width:34ch; margin:1.8rem 0 0; font-size:clamp(1.02rem,1.6vw,1.28rem);
+  color:#5b3a52; font-weight:500;
+}
+.lede b{ background:linear-gradient(transparent 62%, var(--lime) 62%); padding:0 .12em; color:var(--ink); }
+
+/* --- Countdown --- */
+.countdown-block{ margin-top:clamp(2.2rem,5vh,3.4rem); }
+.cd-label{
+  font-family:var(--display); font-weight:700; text-transform:uppercase;
+  letter-spacing:.24em; font-size:.76rem; color:var(--pink); margin-bottom:.9rem;
+}
+.cd{
+  display:flex; gap:clamp(.5rem,2vw,1.1rem); flex-wrap:wrap;
+}
+.cd-unit{
+  flex:1 1 0; min-width:74px; position:relative;
+  background:var(--cream); border:3px solid var(--ink); border-radius:var(--radius);
+  padding:clamp(.7rem,2.4vw,1.35rem) .5rem clamp(.5rem,1.6vw,.85rem);
+  text-align:center; box-shadow:6px 6px 0 var(--ink);
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.cd-unit:nth-child(1){ transform:rotate(-1.6deg); }
+.cd-unit:nth-child(2){ transform:rotate(1.2deg);  box-shadow:6px 6px 0 var(--pink); }
+.cd-unit:nth-child(3){ transform:rotate(-.8deg);  box-shadow:6px 6px 0 var(--orange); }
+.cd-unit:nth-child(4){ transform:rotate(1.8deg);  box-shadow:6px 6px 0 var(--lime); }
+.cd-unit:hover{ transform:translateY(-6px) rotate(0deg); }
+.cd-num{
+  display:block; font-family:var(--display); font-weight:800;
+  font-size:clamp(2.1rem,8.4vw,4.6rem); line-height:.92; letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums; color:var(--ink);
+}
+.cd-unit:nth-child(2) .cd-num{ color:var(--pink); }
+.cd-unit:nth-child(3) .cd-num{ color:var(--orange); }
+.cd-name{
+  display:block; margin-top:.45rem; font-size:.66rem; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase; color:#7a5a70;
+}
+.cd-note{ margin:.95rem 0 0; font-size:.86rem; color:#7a5a70; }
+/* keep the note clear of the floating player on wide screens */
+@media (min-width:900px){ .cd-note{ text-align:right; } }
+
+/* --- "It's her day" state --- */
+.birthday-on{ display:none; }
+body.is-birthday .birthday-on{ display:block; }
+body.is-birthday .countdown-block{ display:none; }
+.day-banner{
+  display:inline-block; background:var(--pink); color:var(--cream);
+  font-family:var(--display); font-weight:800; letter-spacing:-.03em;
+  font-size:clamp(2.2rem,9vw,5rem); line-height:.95; padding:.28em .5em .34em;
+  border:3px solid var(--ink); border-radius:22px; box-shadow:8px 8px 0 var(--ink);
+  transform:rotate(-2.5deg); animation:pop .8s var(--ease) both;
+}
+@keyframes pop{ from{ transform:rotate(-14deg) scale(.6); opacity:0 } }
+.replay{
+  margin-top:1.4rem; display:inline-flex; align-items:center; gap:.6rem;
+  background:var(--ink); color:var(--cream); border:none; cursor:pointer;
+  border-radius:999px; padding:.85rem 1.5rem; font-weight:700; font-size:.95rem;
+  box-shadow:5px 5px 0 var(--orange); transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.replay:hover{ transform:translate(-2px,-2px); box-shadow:8px 8px 0 var(--orange); }
+.replay:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--orange); }
+
+/* Scroll cue */
+.cue{ margin-top:clamp(2.4rem,6vh,3.6rem); display:flex; align-items:center; gap:.8rem;
+  font-size:.74rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#7a5a70; }
+.cue i{ width:34px; height:34px; border:2.5px solid var(--ink); border-radius:50%; display:grid; place-items:center;
+  font-style:normal; color:var(--ink); animation:bob 2.2s ease-in-out infinite; }
+@keyframes bob{ 50%{ transform:translateY(5px) } }
+
+/* Hero entrance */
+.hero .rise{ opacity:0; transform:translateY(26px); animation:rise .9s var(--ease) forwards; }
+.hero .rise:nth-child(1){ animation-delay:.55s }
+.hero .rise:nth-child(2){ animation-delay:.66s }
+.hero .rise:nth-child(3){ animation-delay:.78s }
+.hero .rise:nth-child(4){ animation-delay:.9s }
+.hero .rise:nth-child(5){ animation-delay:1.02s }
+.hero .rise:nth-child(6){ animation-delay:1.14s }
+@keyframes rise{ to{ opacity:1; transform:none } }
+
+/* ============================================================
+   4b. PHOTO STREAM — scroll-driven horizontal strip (hero → gallery)
+   ============================================================ */
+#strip{ height:320vh; position:relative; background:var(--ink); }
+.strip-sticky{
+  position:sticky; top:0; height:100vh; overflow:hidden;
+  display:flex; align-items:center;
+}
+.strip-head{
+  position:absolute; top:clamp(1rem,6vh,3.2rem); left:6vw; right:6vw;
+  display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;
+  color:var(--cream); pointer-events:none;
+}
+.strip-kicker{ margin:0; font-size:.72rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--lime); }
+.strip-title{
+  font-family:var(--display); font-weight:800; letter-spacing:-.035em; line-height:.95;
+  font-size:clamp(1.5rem,5vw,3.4rem); margin:.5rem 0 0;
+}
+.strip-title em{ font-style:normal; color:var(--orange); }
+.strip-count{
+  font-family:var(--display); font-weight:800; font-variant-numeric:tabular-nums;
+  font-size:clamp(1.1rem,4vw,2.1rem); color:var(--cream); white-space:nowrap;
+}
+.strip-count b{ color:var(--pink); }
+.strip-track{
+  display:flex; gap:clamp(.9rem,2.4vw,1.6rem); padding-inline:6vw;
+  width:max-content; will-change:transform;
+}
+.frame{
+  position:relative; flex:0 0 auto;
+  width:clamp(168px,24vw,290px); aspect-ratio:4/5;
+  border:3px solid var(--cream); border-radius:16px; overflow:hidden;
+  display:grid; place-items:center;
+  box-shadow:8px 8px 0 rgba(255,244,228,.14);
+}
+.frame:nth-child(odd){ transform:rotate(-1.6deg) translateY(12px); }
+.frame:nth-child(even){ transform:rotate(1.3deg) translateY(-10px); }
+.frame:nth-child(3n){ transform:rotate(2.1deg) translateY(18px); }
+.frame:nth-child(5n){ transform:rotate(-2.4deg) translateY(-4px); }
+.frame .mono{
+  font-family:var(--display); font-weight:800; color:rgba(255,244,228,.9);
+  font-size:clamp(2.2rem,7vw,4.2rem); letter-spacing:-.04em;
+  text-shadow:0 3px 0 rgba(38,17,31,.2);
+}
+.frame-end{ background:var(--cream); place-content:center; gap:.55rem; text-align:center; }
+.frame-end .mono{ color:var(--pink); text-shadow:none; font-size:clamp(2.6rem,8vw,4.6rem); line-height:1; }
+.fin{ font-size:.6rem; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#7a5a70; }
+.frame .fnum{
+  position:absolute; top:.5rem; left:.55rem; font-style:normal;
+  font-size:.6rem; font-weight:800; letter-spacing:.16em;
+  background:var(--cream); color:var(--ink); border:2px solid var(--ink);
+  border-radius:999px; padding:.12rem .5rem;
+}
+.strip-hint{
+  margin:.95rem 0 0; color:rgba(255,244,228,.6); font-size:.68rem; font-weight:700;
+  letter-spacing:.22em; text-transform:uppercase;
+  animation:nudge 2.4s ease-in-out infinite;
+}
+@keyframes nudge{ 50%{ transform:translateX(8px); } }
+.strip-bar{
+  position:absolute; top:0; left:0; right:0;
+  height:4px; background:rgba(255,244,228,.14); overflow:hidden;
+}
+.strip-bar i{ display:block; height:100%; width:0; background:var(--lime); border-radius:99px; }
+@media (prefers-reduced-motion:reduce){
+  #strip{ height:auto; }
+  .strip-sticky{ position:static; height:auto; padding:3.4rem 0; }
+  .strip-track{ overflow-x:auto; transform:none !important; padding-block:1.4rem; }
+  .strip-hint{ display:none; }
+}
+
+/* ============================================================
+   5. SECTION HEADERS
+   ============================================================ */
+section{ position:relative; padding:clamp(3.4rem,9vh,6.5rem) 0; }
+.sec-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; margin-bottom:clamp(1.8rem,4vh,3rem); }
+.sec-kicker{ font-size:.74rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--pink); margin:0 0 .55rem; }
+.sec-title{
+  font-family:var(--display); font-weight:800; letter-spacing:-.035em; line-height:.92;
+  font-size:clamp(2.1rem,7.4vw,4.4rem); margin:0;
+}
+.sec-title em{ font-style:normal; color:var(--orange); }
+.sec-aside{ max-width:30ch; color:#6b4a61; font-size:.95rem; margin:0; }
+
+/* Reveal-on-scroll utility */
+.reveal{ opacity:0; transform:translateY(34px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+.reveal.in{ opacity:1; transform:none; }
+
+/* ============================================================
+   6. GALLERY
+   ============================================================ */
+#gallery{ background:var(--cream-deep); border-block:3px solid var(--ink); }
+.grid{ /* masonry collage: photos keep their own heights */
+  columns:1; column-gap:clamp(1.1rem,2.4vw,1.8rem);
+}
+@media(min-width:700px){ .grid{ columns:2; } }
+.card{
+  position:relative; background:var(--cream); border:3px solid var(--ink);
+  break-inside:avoid; margin-bottom:clamp(1.1rem,2.4vw,1.8rem);
+  border-radius:20px; padding:.7rem .7rem 1rem; box-shadow:8px 8px 0 var(--ink);
+  /* tilt is a variable so the scroll-reveal can slide cards in WITHOUT
+     losing their rotation (a plain .reveal transform would flatten them) */
+  --tilt:0deg; --drop:12px;
+  opacity:0;
+  transform:rotate(var(--tilt)) translateY(var(--drop)) translate3d(0,30px,0);
+  transition:opacity .75s var(--ease), transform .55s var(--ease), box-shadow .4s var(--ease);
+}
+.card.in{ transform:rotate(var(--tilt)) translateY(var(--drop)); opacity:1; }
+.card:nth-child(4n+1){ --tilt:-2.2deg; }
+.card:nth-child(4n+2){ --tilt:1.6deg;  }
+.card:nth-child(4n+3){ --tilt:-1.1deg; --drop:12px; }
+.card:nth-child(4n+4){ --tilt:2.4deg;  }
+.card:hover{ transform:rotate(0deg) translateY(var(--drop)) translate3d(0,-9px,0) scale(1.02); box-shadow:14px 14px 0 var(--pink); z-index:3; }
+.shot{
+  position:relative; aspect-ratio:4/5; overflow:hidden; border-radius:13px;
+  display:grid; place-items:center; border:2px solid var(--ink);
+}
+.shot .mono, .shot img.real{ transition:transform .65s var(--ease); }
+.card:hover .shot .mono, .card:hover .shot img.real{ transform:scale(1.07); }
+.shot .mono{
+  font-family:var(--display); font-weight:800; color:rgba(255,244,228,.92);
+  font-size:clamp(3.6rem,13vw,6.6rem); line-height:1; letter-spacing:-.05em;
+  text-shadow:0 4px 0 rgba(38,17,31,.18);
+}
+.shot .tag{
+  position:absolute; bottom:.6rem; left:.6rem; background:var(--cream); color:var(--ink);
+  border:2px solid var(--ink); border-radius:999px; padding:.16rem .6rem;
+  font-size:.64rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+}
+.shot .glyph{ position:absolute; top:.55rem; right:.7rem; font-size:1.3rem; opacity:.9; }
+.card img.real{ width:100%; height:100%; object-fit:cover; border-radius:11px; position:absolute; inset:0; }
+/* real photos keep their native shape — the wall reads like pinned prints */
+.shot:has(> img.real){ aspect-ratio:auto; }
+.shot > img.real{ position:static; inset:auto; height:auto; display:block; }
+.cap{ margin:.85rem .35rem 0; display:flex; justify-content:space-between; gap:.6rem; align-items:baseline; }
+.cap p{ margin:0; font-weight:700; font-size:.95rem; }
+.cap small{ color:#8a6a80; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; }
+
+/* placeholder gradient skins */
+.g1{ background:linear-gradient(140deg,var(--pink),#FF6B4A); }
+.g2{ background:linear-gradient(160deg,var(--orange),#FFC53D); }
+.g3{ background:linear-gradient(200deg,var(--plum),var(--pink)); }
+.g4{ background:linear-gradient(120deg,var(--lime),#3FC98A); }
+.g5{ background:linear-gradient(150deg,#5B2BD9,var(--pink)); }
+.g6{ background:linear-gradient(170deg,var(--ink),var(--orange)); }
+
+/* ============================================================
+   6a. BADDIE EDITS — CTA section + fullscreen 9:16 chain player
+   ============================================================ */
+.edits-teaser{ display:flex; gap:clamp(.8rem,2vw,1.4rem); justify-content:center; margin-bottom:clamp(1.6rem,4vh,2.6rem); }
+.mini{
+  position:relative; width:clamp(88px,24vw,150px); aspect-ratio:9/16;
+  border:3px solid var(--ink); border-radius:14px; overflow:hidden;
+  display:grid; place-items:center; box-shadow:6px 6px 0 var(--ink);
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.mini:nth-child(1){ transform:rotate(-4deg); }
+.mini:nth-child(2){ transform:rotate(2deg) translateY(-8px); box-shadow:6px 6px 0 var(--pink); }
+.mini:nth-child(3){ transform:rotate(5deg); box-shadow:6px 6px 0 var(--orange); }
+.mini:hover{ transform:rotate(0) translateY(-8px) scale(1.05); z-index:2; }
+.mini span.mono{
+  font-family:var(--display); font-weight:800; color:rgba(255,244,228,.9);
+  font-size:clamp(1.6rem,6vw,2.6rem); letter-spacing:-.04em;
+}
+.mini i.mtag{
+  position:absolute; bottom:.45rem; left:50%; transform:translateX(-50%);
+  background:var(--cream); color:var(--ink); border:2px solid var(--ink);
+  border-radius:999px; padding:.1rem .5rem; font-style:normal;
+  font-size:.56rem; font-weight:800; letter-spacing:.14em;
+}
+.edits-cta{
+  display:flex; align-items:center; gap:.8rem; margin-inline:auto;
+  font-family:var(--display); font-weight:800; text-transform:uppercase;
+  letter-spacing:.02em; font-size:clamp(1.05rem,3.6vw,1.7rem); line-height:1;
+  background:var(--lime); color:var(--ink); border:3px solid var(--ink);
+  border-radius:999px; padding:1.05rem 1.9rem; cursor:pointer;
+  box-shadow:7px 7px 0 var(--pink); transform:rotate(-1.5deg);
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s;
+  animation:ctaPulse 3.4s ease-in-out infinite;
+}
+.edits-cta:hover{ transform:rotate(0) translate(-3px,-3px) scale(1.03); box-shadow:11px 11px 0 var(--pink); background:var(--cream); }
+.edits-cta:active{ transform:translate(3px,3px); box-shadow:2px 2px 0 var(--pink); }
+.edits-cta .arr{ display:inline-block; transition:transform .25s var(--ease); }
+.edits-cta:hover .arr{ transform:translateX(6px); }
+@keyframes ctaPulse{ 50%{ box-shadow:7px 7px 0 var(--pink), 0 0 0 10px rgba(199,240,74,.18); } }
+.edits-note{ text-align:center; margin:1.1rem 0 0; font-size:.82rem; color:#7a5a70; letter-spacing:.06em; }
+
+/* ---- fullscreen edits player ---- */
+#editsMode{
+  position:fixed; inset:0; z-index:100; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:clamp(.7rem,2vh,1.1rem);
+  background:radial-gradient(circle at 50% 30%, #5c1a4e 0%, var(--plum) 55%, #2a0a26 100%);
+  opacity:0; visibility:hidden; transition:opacity .45s ease, visibility .45s;
+  padding:1rem;
+}
+#editsMode.on{ opacity:1; visibility:visible; }
+.em-top{
+  width:min(92vw, calc((100vh - 9rem) * .5625)); display:flex; align-items:center;
+  justify-content:space-between; gap:1rem; color:var(--cream);
+}
+.em-title{
+  font-family:var(--display); font-weight:800; text-transform:uppercase;
+  letter-spacing:.06em; font-size:clamp(.95rem,3.4vw,1.3rem); color:var(--lime);
+}
+.em-count{ font-family:var(--display); font-weight:800; font-size:clamp(.95rem,3.4vw,1.3rem); }
+.em-count b{ color:var(--pink); font-size:1.25em; }
+.em-close{
+  width:40px; height:40px; flex:0 0 40px; border-radius:50%; cursor:pointer;
+  border:2.5px solid var(--cream); background:transparent; color:var(--cream);
+  font-size:1rem; font-weight:700; display:grid; place-items:center;
+  transition:transform .2s var(--ease), background .2s;
+}
+.em-close:hover{ transform:rotate(90deg); background:var(--pink); }
+.em-stage{
+  position:relative; aspect-ratio:9/16; height:min(72vh, 150vw); max-height:72vh;
+  border:3px solid var(--cream); border-radius:18px; overflow:hidden;
+  background:#1c0718; box-shadow:10px 10px 0 rgba(255,46,126,.55);
+}
+.em-stage.swap{ animation:emswap .45s var(--ease); }
+@keyframes emswap{ from{ transform:scale(1.05); opacity:.35; } }
+.em-stage video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+/* vertical film-strip placeholder while an edit file is missing */
+.em-ph{ position:absolute; inset:0; display:grid; place-items:center; background:var(--plum); transition:opacity .5s ease; }
+.em-ph::before,.em-ph::after{
+  content:""; position:absolute; top:0; bottom:0; width:15px; opacity:.9;
+  background:repeating-linear-gradient(180deg, var(--cream) 0 13px, transparent 13px 30px);
+}
+.em-ph::before{ left:9px; } .em-ph::after{ right:9px; }
+.em-ph .stripes{
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(65deg, rgba(255,244,228,.07) 0 20px, transparent 20px 40px);
+  animation:pan 8s linear infinite;
+}
+.em-ph .ph-in{ position:relative; text-align:center; color:var(--cream); }
+.em-ph .ph-in b{
+  display:block; font-family:var(--display); font-weight:800; letter-spacing:-.03em;
+  font-size:clamp(1.8rem,9vw,3rem); line-height:1;
+}
+.em-ph .ph-in small{ display:block; margin-top:.5rem; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:#E9C6DC; }
+.em-stage.live .em-ph{ opacity:0; pointer-events:none; }
+.em-bar{ position:absolute; left:0; right:0; bottom:0; height:6px; background:rgba(255,244,228,.22); z-index:5; }
+.em-bar i{ display:block; height:100%; width:0%; background:var(--lime); }
+.em-bar i.glide{ transition:width 4s linear; }
+.em-mute{
+  position:absolute; top:.6rem; right:.6rem; z-index:6; width:38px; height:38px;
+  border-radius:50%; cursor:pointer; border:2.5px solid var(--cream);
+  background:rgba(28,7,24,.55); color:var(--cream); display:grid; place-items:center;
+  transition:transform .2s var(--ease);
+}
+.em-mute:hover{ transform:scale(1.1); }
+.em-mute svg{ width:17px; height:17px; fill:currentColor; }
+.em-mute .ic-on{ display:none; }
+.em-mute.unmuted .ic-on{ display:block; }
+.em-mute.unmuted .ic-off{ display:none; }
+.em-hint{ margin:0; color:#E9C6DC; font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; }
+
+/* ============================================================
+   7. LETTER
+   ============================================================ */
+#letter{ overflow:hidden; }
+.letter-stage{ position:relative; }
+.letter-card{
+  position:relative; background:var(--cream); border:3px solid var(--ink);
+  border-radius:24px; padding:clamp(1.5rem,4.6vw,3.4rem);
+  box-shadow:12px 12px 0 var(--pink); transform:rotate(-.7deg);
+  max-width:44rem; margin-inline:auto;
+}
+.tape{
+  position:absolute; width:118px; height:34px; background:rgba(199,240,74,.85);
+  border:2px solid var(--ink); top:-18px; left:50%; transform:translateX(-50%) rotate(-2deg);
+  box-shadow:3px 3px 0 rgba(38,17,31,.18);
+}
+.letter-card h3{
+  font-family:var(--display); font-weight:800; font-size:clamp(1.5rem,4.6vw,2.3rem);
+  letter-spacing:-.03em; margin:.4rem 0 1.1rem; line-height:1.05;
+}
+.letter-body{ font-size:clamp(1rem,1.4vw,1.12rem); color:#3f2537; }
+.letter-body p{ margin:0 0 1.05rem; }
+/* word-by-word typewriter reveal */
+.word{ opacity:0; display:inline-block; transform:translateY(6px); transition:opacity .34s ease, transform .34s var(--ease); }
+.word.on{ opacity:1; transform:none; }
+.cursor{ display:inline-block; width:.55ch; height:1.05em; background:var(--pink); vertical-align:-.16em; margin-left:.15ch; animation:blink 1s steps(2,start) infinite; }
+@keyframes blink{ 50%{ opacity:0 } }
+.signoff{ margin-top:1.6rem; font-family:var(--display); font-weight:700; font-size:1.25rem; color:var(--pink); }
+
+/* ---- sealed envelope scene ---- */
+#envScene{ max-height:760px; transition:max-height .7s var(--ease), opacity .45s ease; }
+#envScene.gone{ max-height:0; opacity:0; overflow:hidden; pointer-events:none; }
+.env-wrap{ display:grid; place-items:center; gap:1.3rem; padding:.6rem 0 1rem; }
+.envelope{ width:min(80vw,400px); cursor:pointer; transition:transform .3s var(--ease); -webkit-tap-highlight-color:transparent; }
+.envelope:hover{ transform:translateY(-7px) rotate(-1.2deg); }
+.envelope:focus-visible{ outline:3px dashed var(--pink); outline-offset:8px; border-radius:18px; }
+.envelope svg{ display:block; width:100%; overflow:visible; }
+.e-back{ fill:var(--pink); stroke:var(--ink); stroke-width:6; }
+.e-pocket{ fill:var(--cream); stroke:var(--ink); stroke-width:6; stroke-linejoin:round; }
+.e-peek rect{ fill:var(--cream); stroke:var(--ink); stroke-width:5; }
+.e-peek line{ stroke:var(--pink); stroke-width:5; stroke-linecap:round; }
+.e-peek{ transform:translateY(40px); opacity:0; }   /* hidden inside until opened */
+.e-flap{ transform-origin:210px 10px; }
+.e-flap-front{ fill:var(--pink); stroke:var(--ink); stroke-width:6; stroke-linejoin:round; }
+.e-flap-back{ fill:var(--cream-deep); stroke:var(--ink); stroke-width:6; stroke-linejoin:round; opacity:0; }
+.e-seal{ fill:var(--ink); stroke:var(--lime); stroke-width:5; transform-origin:210px 196px; }
+.e-seal-t{ fill:var(--cream); font-family:var(--display); font-weight:800; font-size:34px; text-anchor:middle; dominant-baseline:central; transform-origin:210px 196px; }
+
+#envScene.opening .e-seal, #envScene.opening .e-seal-t{ animation:sealPop .5s var(--ease) forwards; }
+@keyframes sealPop{ 40%{ transform:scale(1.25) rotate(14deg); opacity:1 } 100%{ transform:scale(0) rotate(40deg); opacity:0 } }
+#envScene.opening .e-flap{ animation:flapFlip .75s var(--ease) .3s forwards; }
+@keyframes flapFlip{ to{ transform:scaleY(-.92); } }
+#envScene.opening .e-flap-front{ animation:ffOut .75s linear .3s forwards; }
+#envScene.opening .e-flap-back{ animation:ffIn .75s linear .3s forwards; }
+@keyframes ffOut{ 0%,45%{ opacity:1 } 55%,100%{ opacity:0 } }
+@keyframes ffIn{ 0%,45%{ opacity:0 } 55%,100%{ opacity:1 } }
+#envScene.opening .e-peek{ animation:peekUp .85s var(--ease) .95s forwards; }
+@keyframes peekUp{ 0%{ opacity:0; transform:translateY(40px); } 35%{ opacity:1; } 100%{ opacity:1; transform:translateY(-58px); } }
+#envScene.opening .envelope{ animation:envAway .6s var(--ease) 1.75s forwards; }
+@keyframes envAway{ to{ transform:translateY(46px) scale(.7); opacity:0; } }
+#envScene.opening .env-cta, #envScene.opening .env-hint{ animation:fadeSoft .4s ease forwards; }
+@keyframes fadeSoft{ to{ opacity:0; transform:translateY(8px); } }
+
+.env-cta{
+  display:flex; align-items:center; gap:.7rem;
+  font-family:var(--display); font-weight:800; text-transform:uppercase;
+  font-size:clamp(.95rem,3vw,1.25rem); line-height:1;
+  background:var(--pink); color:var(--cream); border:3px solid var(--ink);
+  border-radius:999px; padding:.95rem 1.7rem; cursor:pointer;
+  box-shadow:6px 6px 0 var(--ink); transform:rotate(-1.5deg);
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s;
+}
+.env-cta:hover{ transform:rotate(0) translate(-2px,-2px); box-shadow:9px 9px 0 var(--ink); background:var(--orange); }
+.env-cta:active{ transform:translate(3px,3px); box-shadow:2px 2px 0 var(--ink); }
+.env-hint{ margin:0; font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; color:#8a6a80; }
+
+/* letter card: sealed until the envelope opens */
+.letter-card.sealed{ display:none; }
+.letter-card.bloom-in{ animation:cardBloom .8s var(--ease) both; }
+@keyframes cardBloom{ from{ opacity:0; transform:rotate(-3deg) scale(.86) translateY(36px); } }
+
+/* ---- blooming flowers layer ---- */
+.blooms{ position:fixed; inset:0; z-index:65; pointer-events:none; transition:opacity 1.3s ease; }
+.blooms.fade{ opacity:0; }
+.flower{ position:absolute; width:var(--s); height:var(--s); animation:sway 5.5s ease-in-out infinite alternate; }
+@keyframes sway{ from{ rotate:-4deg } to{ rotate:4deg } }
+.flower .petal{
+  position:absolute; left:50%; top:50%; width:34%; height:52%;
+  margin-left:-17%; margin-top:-52%;
+  background:var(--pc); border:2.5px solid var(--ink);
+  border-radius:50% 50% 46% 46% / 62% 62% 38% 38%;
+  transform-origin:50% 100%;
+  animation:bloom .8s var(--ease) both; animation-delay:var(--d);
+}
+@keyframes bloom{ from{ transform:rotate(var(--r)) translateY(-14%) scale(0); } to{ transform:rotate(var(--r)) translateY(-14%) scale(1); } }
+.flower .core{
+  position:absolute; left:50%; top:50%; width:32%; height:32%;
+  margin-left:-16%; margin-top:-16%; border-radius:50%;
+  background:var(--cc); border:2.5px solid var(--ink);
+  transform:scale(0); animation:corePop .5s var(--ease) .55s forwards;
+}
+@keyframes corePop{ 60%{ transform:scale(1.25) } 100%{ transform:scale(1) } }
+
+/* ============================================================
+   8. CLOSING
+   ============================================================ */
+#close{ background:var(--plum); color:var(--cream); border-top:3px solid var(--ink); text-align:center; overflow:hidden; }
+#close .big{
+  font-family:var(--display); font-weight:800; letter-spacing:-.045em;
+  font-size:clamp(2.7rem,13vw,8.5rem); line-height:.88; margin:0;
+}
+#close .big span{ color:var(--lime); }
+#close .big u{ text-decoration:none; color:var(--orange); }
+.warm{ max-width:36ch; margin:1.4rem auto 0; color:#F3D9E8; font-size:clamp(1rem,1.5vw,1.15rem); }
+.ghost-num{
+  position:absolute; left:50%; bottom:-6vh; transform:translateX(-50%);
+  font-family:var(--display); font-weight:800; font-size:46vw; line-height:.7;
+  color:rgba(255,244,228,.05); pointer-events:none; user-select:none; letter-spacing:-.06em;
+}
+.sig{
+  margin-top:clamp(2.6rem,7vh,4.4rem); display:inline-flex; align-items:center; gap:.6rem;
+  border-top:1px solid rgba(255,244,228,.25); padding-top:1.2rem;
+  font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:#E9C6DC;
+}
+.sig i{ font-style:normal; color:var(--pink); animation:beat 1.8s ease-in-out infinite; display:inline-block; }
+@keyframes beat{ 0%,100%{transform:scale(1)} 25%{transform:scale(1.35)} 40%{transform:scale(1)} }
+footer{ background:var(--plum); color:#C79AB8; text-align:center; padding:0 0 2.2rem; font-size:.74rem; letter-spacing:.1em; position:relative; z-index:1; }
+
+/* ============================================================
+   9. FLOATING MUSIC PLAYER
+   ============================================================ */
+.player{
+  position:fixed; z-index:70; left:clamp(.8rem,3vw,1.6rem); bottom:clamp(.8rem,3vw,1.6rem);
+  display:flex; align-items:center; gap:.75rem;
+  background:var(--ink); color:var(--cream); border:3px solid var(--ink);
+  border-radius:999px; padding:.45rem 1.15rem .45rem .45rem;
+  box-shadow:5px 5px 0 var(--pink); max-width:calc(100vw - 6.6rem);
+  transition:transform .3s var(--ease), opacity .4s ease;
+}
+.player .pbtn{
+  width:42px; height:42px; flex:0 0 42px; border-radius:50%; border:2.5px solid var(--cream);
+  background:var(--pink); color:var(--cream); cursor:pointer; display:grid; place-items:center;
+  transition:transform .2s var(--ease), background .2s;
+}
+.player .pbtn:hover{ transform:scale(1.08); background:var(--orange); }
+.player .pbtn svg{ width:15px; height:15px; fill:currentColor; }
+.pmeta{ min-width:0; }
+.ptitle{ font-size:.82rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:34vw; }
+.pbar{ width:min(34vw,150px); height:5px; background:rgba(255,244,228,.25); border-radius:99px; margin-top:.3rem; overflow:hidden; cursor:pointer; }
+.pfill{ height:100%; width:0%; background:var(--lime); border-radius:99px; }
+.pulse-ring{ position:absolute; inset:-3px; border-radius:999px; border:2.5px solid var(--lime); opacity:0; pointer-events:none; }
+.player.hint .pulse-ring{ animation:ring 2.2s ease-out infinite; }
+@keyframes ring{ 0%{opacity:.9; transform:scale(1)} 100%{opacity:0; transform:scale(1.16)} }
+.player.playing .ptitle::after{ content:" ▸"; color:var(--lime); }
+
+/* ============================================================
+   10. BALLOON SURPRISE BUTTON
+   ============================================================ */
+.balloon-btn{
+  position:fixed; z-index:70; right:clamp(.8rem,3vw,1.6rem); bottom:clamp(.8rem,3vw,1.6rem);
+  width:60px; height:60px; border-radius:50%; cursor:pointer;
+  border:3px solid var(--ink); background:var(--lime); color:var(--ink);
+  font-size:1.7rem; line-height:1; display:grid; place-items:center;
+  box-shadow:5px 5px 0 var(--ink); animation:float 4.5s ease-in-out infinite;
+  transition:transform .2s var(--ease);
+}
+.balloon-btn:hover{ transform:scale(1.12) rotate(-8deg); }
+.balloon-btn:active{ transform:scale(.94); }
+@keyframes float{ 50%{ translate:0 -9px; rotate:5deg } }
+
+.balloons{ position:fixed; inset:0; z-index:75; pointer-events:none; overflow:hidden; }
+.balloon{
+  position:absolute; bottom:-90px; width:46px; height:58px; border-radius:50% 50% 46% 46%;
+  border:2.5px solid var(--ink); animation:up 3.4s var(--ease) forwards;
+}
+.balloon::after{ content:""; position:absolute; left:50%; top:100%; width:2px; height:44px; background:var(--ink); transform:translateX(-50%) rotate(3deg); }
+@keyframes up{ to{ transform:translateY(-118vh) rotate(14deg); opacity:0 } }
+
+.toast{
+  position:fixed; z-index:85; left:50%; bottom:clamp(5.6rem,12vh,7.4rem); transform:translate(-50%,20px);
+  background:var(--cream); color:var(--ink); border:3px solid var(--ink); border-radius:18px;
+  padding:.7rem 1.15rem; font-weight:700; font-size:.92rem; box-shadow:5px 5px 0 var(--orange);
+  opacity:0; pointer-events:none; transition:opacity .35s ease, transform .45s var(--ease);
+  max-width:min(88vw,26rem); text-align:center;
+}
+.toast.show{ opacity:1; transform:translate(-50%,0); }
+
+/* ============================================================
+   11. FULLSCREEN CELEBRATION OVERLAY (fires at countdown zero)
+   ============================================================ */
+#celebrate{
+  position:fixed; inset:0; z-index:110; display:grid; place-items:center; text-align:center;
+  background:radial-gradient(circle at 50% 45%, #FF5C9E 0%, var(--pink) 42%, var(--plum) 100%);
+  opacity:0; visibility:hidden; transition:opacity .5s ease, visibility .5s;
+  padding:1.5rem;
+}
+#celebrate.on{ opacity:1; visibility:visible; }
+#celebrate .flash{ position:absolute; inset:0; background:var(--cream); opacity:0; }
+/* animations are scoped to .on so they REPLAY every time the overlay opens */
+#celebrate.on .flash{ animation:flash .9s ease-out 2; }
+@keyframes flash{ 0%{opacity:.95} 100%{opacity:0} }
+#celebrate .inner{ position:relative; }
+#celebrate h2{
+  font-family:var(--display); font-weight:800; color:var(--cream);
+  font-size:clamp(2.6rem,13vw,7.5rem); line-height:.88; letter-spacing:-.045em; margin:0;
+  text-shadow:5px 5px 0 var(--ink);
+}
+#celebrate.on h2{ animation:zoomIn .8s var(--ease) both .15s; }
+#celebrate p{ color:#FFE3EF; font-size:clamp(1rem,2.6vw,1.3rem); margin:1.1rem 0 0; }
+#celebrate.on p{ animation:zoomIn .8s var(--ease) both .4s; }
+#celebrate .go{
+  margin-top:2rem;
+  background:var(--lime); color:var(--ink); border:3px solid var(--ink); cursor:pointer;
+  font-family:var(--display); font-weight:800; font-size:1.05rem; letter-spacing:.04em;
+  padding:.9rem 1.9rem; border-radius:999px; box-shadow:6px 6px 0 var(--ink);
+  transition:transform .2s var(--ease);
+}
+#celebrate.on .go{ animation:zoomIn .8s var(--ease) both .6s; }
+/* hover uses translate/rotate (independent of the transform animation) */
+#celebrate .go:hover{ translate:-2px -2px; rotate:-2deg; }
+@keyframes zoomIn{ from{ transform:scale(.55) rotate(-6deg); opacity:0 } }
+
+/* ============================================================
+   12. RESPONSIVE / MOTION SAFETY
+   ============================================================ */
+@media (max-width:560px){
+  .cd-unit{ min-width:0; flex:1 1 calc(50% - .5rem); }
+  .ptitle{ font-size:.72rem; max-width:31vw; width:31vw; }
+  .pbar{ max-width:31vw; width:31vw; }
+  .player{ padding-right:.9rem; }
+  .letter-card{ box-shadow:8px 8px 0 var(--pink); }
+  .ghost-num{ font-size:70vw; }
+  .cue{ justify-content:center; text-align:center; }
+  .hero{ padding-bottom:7.5rem; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  html{ scroll-behavior:auto; }
+  .reveal{ opacity:1; transform:none; }
+  .word{ opacity:1; transform:none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- page-load curtain -->
+<div id="curtain" aria-hidden="true"><span>19</span></div>
+
+<!-- ambient background -->
+<div class="bg-shapes" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+</div>
+<div class="dot-field" aria-hidden="true"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<!-- ══════════════ TOP RIBBON ══════════════ -->
+<div class="ribbon-clip"><div class="ribbon" aria-hidden="true">
+  <div class="ribbon-track">
+    <span>Javaria turns 19 <i>✦</i> one day only <i>✦</i> cake mandatory <i>✦</i> wishes accepted all year <i>✦</i></span>
+    <span>Javaria turns 19 <i>✦</i> one day only <i>✦</i> cake mandatory <i>✦</i> wishes accepted all year <i>✦</i></span>
+  </div>
+</div>
+</div>
+
+<main>
+
+  <!-- ══════════════ 1. HERO ══════════════ -->
+  <header class="hero">
+    <div class="wrap">
+
+      <div class="rise"><span class="eyebrow"><b></b> Chapter Nineteen</span></div>
+
+      <h1 class="rise">
+        <span class="l1">Happy</span>
+        <span class="l2"><span class="nineteen">19th</span> Birthday,</span>
+        <span class="l3"><span class="name">Laadliiiii</span><span class="sticker">Est.<br>2007<br>✦</span></span>
+      </h1>
+
+      <p class="lede rise">
+        Nineteen looks good on you. Here's a tiny corner of the internet that exists
+        for exactly one reason — <b>you</b>.
+      </p>
+
+      <!-- ---------- COUNTDOWN (visible before her birthday) ---------- -->
+      <div class="countdown-block rise">
+        <p class="cd-label" id="cdLabel">Counting down to the big moment</p>
+        <div class="cd" role="timer" aria-live="off">
+          <div class="cd-unit"><span class="cd-num" id="d">00</span><span class="cd-name">Days</span></div>
+          <div class="cd-unit"><span class="cd-num" id="h">00</span><span class="cd-name">Hours</span></div>
+          <div class="cd-unit"><span class="cd-num" id="m">00</span><span class="cd-name">Minutes</span></div>
+          <div class="cd-unit"><span class="cd-num" id="s">00</span><span class="cd-name">Seconds</span></div>
+        </div>
+        <p class="cd-note" id="cdNote"></p>
+      </div>
+
+      <!-- ---------- BIRTHDAY-DAY STATE (visible once the clock hits zero) ---------- -->
+      <div class="birthday-on rise">
+        <div class="day-banner">IT'S HER DAY!</div>
+        <p class="lede" style="margin-top:1.4rem">The countdown ended. The celebration didn't.</p>
+        <button class="replay" id="replayBtn">🎊 Throw the confetti again</button>
+      </div>
+
+      <div class="cue rise"><i>↓</i> Keep scrolling</div>
+    </div>
+  </header>
+
+  <!-- ══════════════ PHOTO STREAM INTERLUDE ══════════════
+       📸 20 frames that glide right→left as she scrolls.
+          PHOTOS WIRED: images/strip01.jpg … strip19.jpg (frame 20 is the
+          "fin" closer card). To swap a photo, just replace the file in
+          images/ keeping the name — or edit the matching <img src>.
+          Add/remove .frame divs freely; the counter adapts automatically.
+       ═════════════════════════════════════ -->
+  <section id="strip" aria-label="Photo stream">
+    <div class="strip-sticky">
+      <div class="strip-head">
+        <div>
+          <p class="strip-kicker">Interlude — the photo stream</p>
+          <h2 class="strip-title">19 years, <em>20 frames</em>,<br>one Javaria</h2>
+          <p class="strip-hint">Keep scrolling — the stream moves →</p>
+        </div>
+        <span class="strip-count"><b id="stripNow">01</b> / <span id="stripTotal">20</span></span>
+      </div>
+
+      <div class="strip-track" id="stripTrack">
+        <div class="frame g1"><img class="real" src="images/strip01.jpg" alt="Javaria on a walk with family"><i class="fnum">01</i></div>
+        <div class="frame g2"><img class="real" src="images/strip02.jpg" alt="Javaria cosy at home in white"><i class="fnum">02</i></div>
+        <div class="frame g3"><img class="real" src="images/strip03.jpg" alt="Javaria out at night under green lights"><i class="fnum">03</i></div>
+        <div class="frame g4"><img class="real" src="images/strip04.jpg" alt="Javaria's tilted smile at home"><i class="fnum">04</i></div>
+        <div class="frame g5"><img class="real" src="images/strip05.jpg" alt="Javaria flashing a peace sign"><i class="fnum">05</i></div>
+        <div class="frame g6"><img class="real" src="images/strip06.jpg" alt="Javaria in a peach party dress in the courtyard"><i class="fnum">06</i></div>
+        <div class="frame g1"><img class="real" src="images/strip07.jpg" alt="Javaria in an orange dupatta at a wedding"><i class="fnum">07</i></div>
+        <div class="frame g2"><img class="real" src="images/strip08.jpg" alt="Javaria pulling a face with fresh mehndi"><i class="fnum">08</i></div>
+        <div class="frame g3"><img class="real" src="images/strip09.jpg" alt="Javaria hugging her teddy in the kitchen"><i class="fnum">09</i></div>
+        <div class="frame g4"><img class="real" src="images/strip10.jpg" alt="Javaria in the garden at night, yellow dupatta"><i class="fnum">10</i></div>
+        <div class="frame g5"><img class="real" src="images/strip11.jpg" alt="Javaria wrestling with the cousins"><i class="fnum">11</i></div>
+        <div class="frame g6"><img class="real" src="images/strip12.jpg" alt="Javaria with her school awards"><i class="fnum">12</i></div>
+        <div class="frame g1"><img class="real" src="images/strip13.jpg" alt="Javaria's surprised close-up"><i class="fnum">13</i></div>
+        <div class="frame g2"><img class="real" src="images/strip14.jpg" alt="Javaria elegant in a black abaya"><i class="fnum">14</i></div>
+        <div class="frame g3"><img class="real" src="images/strip15.jpg" alt="Javaria showing off mehndi and painted hands"><i class="fnum">15</i></div>
+        <div class="frame g4"><img class="real" src="images/strip16.jpg" alt="Javaria's night selfie with her brother"><i class="fnum">16</i></div>
+        <div class="frame g5"><img class="real" src="images/strip17.jpg" alt="Javaria's soft smile at home"><i class="fnum">17</i></div>
+        <div class="frame g6"><img class="real" src="images/strip18.jpg" alt="Javaria on a walk with family (again — bookend)"><i class="fnum">18</i></div>
+        <div class="frame g1"><img class="real" src="images/strip19.jpg" alt="Javaria, grayscale edit with butterflies"><i class="fnum">19</i></div>
+        <div class="frame frame-end"><span class="mono">♥</span><small class="fin">Have a Great Day</small><i class="fnum">20</i></div>
+      </div>
+
+      <div class="strip-bar"><i id="stripFill"></i></div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 2. GALLERY ══════════════
+       ┌──────────────────────────────────────────────────────────┐
+       │  📸 TO ADD REAL PHOTOS:                                  │
+       │  In each .card below, put an <img> INSIDE the .shot div   │
+       │  and delete the placeholder <span class="mono"> etc.      │
+       │  Example:                                                 │
+       │    <div class="shot g1">                                  │
+       │      <img class="real" src="/images/photo1.jpg"           │
+       │           alt="Javaria">                                  │
+       │    </div>                                                 │
+       │  The gradient classes g1–g6 can stay — they show while    │
+       │  the image loads. Captions are the <p> under each photo.  │
+       └──────────────────────────────────────────────────────────┘
+       ══════════════════════════════════════ -->
+  <section id="gallery">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="sec-kicker">02 — The Archive</p>
+          <h2 class="sec-title">Moments <em>worth</em><br>keeping</h2>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- PHOTO 1 · real photo wired: images/gal01.jpg (replace the file to swap) -->
+        <article class="card reveal">
+          <div class="shot g1">
+            <img class="real" src="images/gal01.jpg" alt="Javaria's selfie with ammi and abbu lounging on the bed">
+          </div>
+        </article>
+
+        <!-- PHOTO 2 · real photo wired: images/gal02.jpg (replace the file to swap) -->
+        <article class="card reveal">
+          <div class="shot g2">
+            <img class="real" src="images/gal02.jpg" alt="Javaria leaning into frame beside her brother">
+          </div>
+        </article>
+
+        <!-- PHOTO 3 · real photo wired: images/gal03.jpg (replace the file to swap) -->
+        <article class="card reveal">
+          <div class="shot g3">
+            <img class="real" src="images/gal03.jpg" alt="Javaria and her brother dressed up at a wedding">
+          </div>
+        </article>
+
+        <!-- PHOTO 4 · real photo wired: images/gal04.jpg (replace the file to swap) -->
+        <article class="card reveal">
+          <div class="shot g4">
+            <img class="real" src="images/gal04.jpg" alt="Javaria in the pool with both hands up">
+          </div>
+        </article>
+
+        <!-- PHOTO 5 · real photo wired: images/gal05.jpg (replace the file to swap) -->
+        <article class="card reveal">
+          <div class="shot g5">
+            <img class="real" src="images/gal05.jpg" alt="Javaria and her brother — green and black, same energy">
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 3. BADDIE EDITS ══════════════
+       💅 The button opens a fullscreen 9:16 player that chains
+          edit 1 → edit 2 → edit 3, then returns to the page.
+          Edit files go in /videos/edit1.mp4 … edit3.mp4
+          (see the 🎬 comment in the player markup at the bottom).
+       ═════════════════════════════════════ -->
+  <section id="edits">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="sec-kicker">03 — The main event</p>
+          <h2 class="sec-title">Baddie <em>edits</em>,<br>back to back</h2>
+        </div>
+        <p class="sec-aside">Three vertical edits, zero skips, full screen. Press play, sit back.</p>
+      </div>
+
+      <div class="edits-teaser reveal">
+        <div class="mini g3"><span class="mono">01</span><i class="mtag">Edit</i></div>
+        <div class="mini g1"><span class="mono">02</span><i class="mtag">Edit</i></div>
+        <div class="mini g5"><span class="mono">03</span><i class="mtag">Edit</i></div>
+      </div>
+
+      <button class="edits-cta reveal" id="editsCta">Let's go to baddie edits <span class="arr">→</span></button>
+      <p class="edits-note reveal">3 edits · 9:16 · sound on recommended</p>
+    </div>
+  </section>
+
+  <!-- ══════════════ 4. LETTER ══════════════
+       ✍️ TO PERSONALIZE: edit the text inside the <p> tags below.
+          The word-by-word typewriter reveal works on whatever you type —
+          just keep it inside .letter-body. Anything in [square brackets]
+          is a placeholder for you.
+       ══════════════════════════════════════ -->
+  <section id="letter">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <p class="sec-kicker">04 — From your brother</p>
+          <h2 class="sec-title">A letter, <em>because</em><br>saying it out loud is hard</h2>
+        </div>
+      </div>
+
+      <div class="letter-stage reveal">
+
+        <!-- ✉️ sealed envelope — click opens it, fires fireworks + blooming flowers -->
+        <div id="envScene">
+          <div class="env-wrap">
+            <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the envelope">
+              <svg viewBox="0 0 420 300" aria-hidden="true">
+                <rect class="e-back" x="6" y="10" width="408" height="284" rx="16"/>
+                <g class="e-peek">
+                  <rect x="66" y="46" width="288" height="210" rx="10"/>
+                  <line x1="96" y1="92"  x2="324" y2="92"/>
+                  <line x1="96" y1="124" x2="324" y2="124"/>
+                  <line x1="96" y1="156" x2="252" y2="156"/>
+                </g>
+                <path class="e-pocket" d="M6 294 L6 128 L210 208 L414 128 L414 294 Z"/>
+                <g class="e-flap">
+                  <path class="e-flap-back"  d="M8 10 L210 202 L412 10 Z"/>
+                  <path class="e-flap-front" d="M8 10 L210 202 L412 10 Z"/>
+                </g>
+                <circle class="e-seal" cx="210" cy="196" r="32"/>
+                <text class="e-seal-t" x="210" y="198">J</text>
+              </svg>
+            </div>
+            <button class="env-cta" id="envOpen">Open the envelope <span aria-hidden="true">♥</span></button>
+            <p class="env-hint">one letter inside · sealed with love</p>
+          </div>
+        </div>
+
+        <div class="letter-card sealed" id="letterCard">
+          <div class="tape" aria-hidden="true"></div>
+          <h3>To Javaria, on turning 19 —</h3>
+
+          <!-- ✍️ HER LETTER — edit these <p> lines anytime; the typewriter
+               reveal adapts to whatever you write -->
+          <div class="letter-body" id="letterBody">
+            <p>finally ,19 saal zindgi ke kaam ho gaye 😭 ,lekin allah tallah lambi zindgi de takreeban 100 saal to or de apny bacho ke bachy bhi dekhy ko mily .😊</p>
+            <p>Khair allah talah tujhe buhat buhat kamyab kary or tujhe naik bhi banaye or duniya mai jo bury cheezain hai us se bhi dor raky .💖</p>
+            <p>soch raha tha mama ke sath islamabab any ke liye lekin uni khul gai to ab socha aisy hi wish kar do</p>
+            <p>LOLLLLL</p>
+            <p>Lots Of Loveeee</p>
+          </div>
+
+          <div class="signoff">— Your brother <span style="color:var(--orange)">♥</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 5. CLOSING ══════════════ -->
+  <section id="close">
+    <span class="ghost-num" aria-hidden="true">19</span>
+    <div class="wrap" style="position:relative">
+      <p class="sec-kicker reveal" style="color:var(--lime)">05 — The last page</p>
+      <h2 class="big reveal">Here's to <span>19</span>,<br>and to <u>you</u>.</h2>
+      <p class="warm reveal">
+        Eat the cake. Take the photos. Be impossibly happy this year —
+        you've earned more than your share of it.
+      </p>
+      <div class="sig reveal">Made with love by your brother <i>♥</i></div>
+    </div>
+  </section>
+</main>
+
+<footer>Happy Birthday Javaria · 19 · <span id="yearTag"></span></footer>
+
+<!-- ══════════════ 7. MUSIC PLAYER (floating) ══════════════
+     🎵 TO ADD HER SONG: drop an mp3 next to this file (e.g. /audio/song.mp3)
+        and set it as the src below. Keep muted autoplay OFF — browsers block
+        audio until she taps the button, which is exactly what this does.
+     ══════════════════════════════════════ -->
+<div class="player hint" id="player">
+  <span class="pulse-ring" aria-hidden="true"></span>
+  <button class="pbtn" id="playBtn" aria-label="Play birthday song" aria-pressed="false">
+    <!-- play icon -->
+    <svg id="iconPlay" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    <!-- pause icon (hidden until playing) -->
+    <svg id="iconPause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+  </button>
+  <div class="pmeta">
+    <div class="ptitle" id="pTitle">Play her song 🎧</div>
+    <div class="pbar" id="pBar" role="slider" aria-label="Seek" tabindex="0"><div class="pfill" id="pFill"></div></div>
+  </div>
+  <!-- ▼▼▼ REPLACE THIS SRC WITH HER SONG ▼▼▼ -->
+  <audio id="audio" preload="none" loop>
+    <source src="/audio/song.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<!-- floating surprise balloon -->
+<button class="balloon-btn" id="balloonBtn" aria-label="Surprise">🎈</button>
+<div class="balloons" id="balloons" aria-hidden="true"></div>
+<div class="blooms" id="bloomBox" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ══════════════ fullscreen BADDIE EDITS player ══════════════
+     🎬 TO ADD HER EDITS: drop three vertical (9:16) mp4 files in the
+        videos/ folder named edit1.mp4, edit2.mp4, edit3.mp4 — or change
+        the paths in the EDITS array in the script below.
+        They play fullscreen in order; when the 3rd ends the player
+        closes and she's back on the page. Until files exist, styled
+        placeholders auto-advance every 4s so the flow is previewable.
+     ═════════════════════════════════════ -->
+<div id="editsMode" role="dialog" aria-modal="true" aria-label="Baddie edits player" aria-hidden="true">
+  <div class="em-top">
+    <span class="em-title">Baddie edits</span>
+    <span class="em-count"><b id="emNow">01</b> / 03</span>
+    <button class="em-close" id="editsClose" aria-label="Exit edits">✕</button>
+  </div>
+  <div class="em-stage" id="emStage">
+    <video id="emVideo" playsinline preload="metadata"></video>
+    <div class="em-ph" id="emPh" aria-hidden="true">
+      <div class="stripes"></div>
+      <div class="ph-in"><b id="emPhLabel">EDIT 01</b><small>placeholder · add edit1.mp4</small></div>
+    </div>
+    <button class="em-mute" id="emMute" aria-label="Toggle sound">
+      <svg class="ic-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.06A4.5 4.5 0 0 0 16.5 12z"/></svg>
+      <svg class="ic-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm18.6 2 2.2-2.2-1.4-1.4-2.2 2.2-2.2-2.2-1.4 1.4 2.2 2.2-2.2 2.2 1.4 1.4 2.2-2.2 2.2 2.2 1.4-1.4z"/></svg>
+    </button>
+    <div class="em-bar"><i id="emFill"></i></div>
+  </div>
+  <p class="em-hint" id="emHint">now playing · edit 1 of 3</p>
+</div>
+
+<!-- fullscreen celebration -->
+<div id="celebrate" role="dialog" aria-modal="true" aria-label="Birthday celebration" aria-hidden="true">
+  <div class="flash" aria-hidden="true"></div>
+  <div class="inner">
+    <h2>IT'S HER<br>DAY!</h2>
+    <p>Midnight hit. Nineteen is officially live. 🎂</p>
+    <button class="go" id="closeCelebrate">Let's go in →</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ⚙️  CONFIG  — the only 3 lines you really need to touch
+   ============================================================ */
+const CONFIG = {
+  /* 🎂 Her birthday. Format: "YYYY-MM-DD". The page counts down to
+        midnight STARTING her birthday (00:00). If today is already her
+        birthday, the page switches to "IT'S HER DAY" mode. */
+  birthday: "2026-09-16",        // ← her birthday; countdown targets midnight TONIGHT (00:00 on this date)
+
+  /* 🎵 Her song (must be reachable from this page) */
+  song: "/audio/song.mp3",       // ← change this to your mp3 path
+  songName: "Her favourite song",// ← shown in the little player
+};
+
+/* ============================================================
+   PAGE LOAD
+   ============================================================ */
+window.addEventListener('load', () => document.body.classList.add('loaded'));
+setTimeout(() => document.body.classList.add('loaded'), 2500); // safety net
+document.getElementById('yearTag').textContent = new Date().getFullYear();
+
+/* ============================================================
+   COUNTDOWN + BIRTHDAY-DAY DETECTION
+   ============================================================ */
+const parts = CONFIG.birthday.split('-').map(Number);
+const BIRTH_MONTH = parts[1] - 1, BIRTH_DAY = parts[2];
+
+const pad = n => String(n).padStart(2, '0');
+const el = { d:document.getElementById('d'), h:document.getElementById('h'),
+             m:document.getElementById('m'), s:document.getElementById('s'),
+             label:document.getElementById('cdLabel'), note:document.getElementById('cdNote') };
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+/* Next midnight that starts her birthday. If it already happened this year,
+   roll to next year. */
+function nextTarget(now){
+  let y = now.getFullYear();
+  let t = new Date(y, BIRTH_MONTH, BIRTH_DAY, 0, 0, 0, 0);
+  if (t.getTime() <= now.getTime()) t = new Date(y + 1, BIRTH_MONTH, BIRTH_DAY, 0, 0, 0, 0);
+  return t;
+}
+
+function isBirthdayToday(now){
+  return now.getMonth() === BIRTH_MONTH && now.getDate() === BIRTH_DAY;
+}
+
+let target = nextTarget(new Date());
+let firedCelebration = false;
+
+function tick(){
+  const now = new Date();
+
+  // It IS her birthday right now → celebration mode
+  if (isBirthdayToday(now)){
+    document.body.classList.add('is-birthday');
+    if (!firedCelebration){ firedCelebration = true; celebrate(true); }
+    return;
+  }
+  document.body.classList.remove('is-birthday');
+
+  const diff = target - now;
+
+  if (diff <= 0){                       // ⏰ countdown hit zero
+    firedCelebration = true;
+    celebrate(true);
+    target = nextTarget(new Date());    // roll to next year for future visits
+    return;
+  }
+
+  const secs = Math.floor(diff / 1000);
+  el.d.textContent = pad(Math.floor(secs / 86400));
+  el.h.textContent = pad(Math.floor(secs % 86400 / 3600));
+  el.m.textContent = pad(Math.floor(secs % 3600 / 60));
+  el.s.textContent = pad(secs % 60);
+
+  el.note.textContent = `Midnight, ${BIRTH_DAY} ${MONTHS[BIRTH_MONTH]} — the exact second 19 begins.`;
+  if (diff < 86400000) el.label.textContent = 'Less than a day to go 👀';
+}
+tick();
+setInterval(tick, 1000);
+
+/* ============================================================
+   CONFETTI ENGINE (hand-rolled, no libraries)
+   Only used for the countdown-zero burst + the balloon button.
+   ============================================================ */
+const cvs = document.getElementById('confetti');
+const ctx = cvs.getContext('2d');
+let bits = [], raf = null;
+const COLORS = ['#FF2E7E','#FF7A1A','#C7F04A','#FFF4E4','#43103C','#FFFFFF'];
+
+function sizeCanvas(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cvs.width = innerWidth * dpr; cvs.height = innerHeight * dpr;
+  cvs.style.width = innerWidth + 'px'; cvs.style.height = innerHeight + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+sizeCanvas();
+addEventListener('resize', sizeCanvas);
+
+function burst(x, y, count = 90, power = 1){
+  for (let i = 0; i < count; i++){
+    const a = Math.random() * Math.PI * 2;
+    const sp = (3 + Math.random() * 11) * power;
+    bits.push({
+      x, y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp - 4 * power,
+      w: 5 + Math.random() * 9,
+      h: 7 + Math.random() * 12,
+      rot: Math.random() * Math.PI,
+      vr: (Math.random() - .5) * .35,
+      color: COLORS[(Math.random() * COLORS.length) | 0],
+      life: 1,
+      decay: .006 + Math.random() * .012,
+      ribbon: Math.random() > .6, kind:'conf'
+    });
+  }
+  if (!raf) raf = requestAnimationFrame(loop);
+}
+
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function loop(){
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  const next = [];
+  const pre = bits.length;          // sparks spawned mid-frame by explode()
+  bits.forEach(b => {
+    if (b.kind === 'rocket'){
+      b.x += b.vx; b.y += b.vy; b.vy += .13;
+      ctx.save();
+      ctx.strokeStyle = b.color; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+      ctx.globalAlpha = .9;
+      ctx.beginPath(); ctx.moveTo(b.x - b.vx * 2.4, b.y - b.vy * 2.4); ctx.lineTo(b.x, b.y); ctx.stroke();
+      ctx.restore();
+      if (b.y <= b.ty || b.vy > -1.6){ explode(b.x, b.y, b.color); return; }  // burst at apex
+      next.push(b); return;
+    }
+    if (b.kind === 'spark'){
+      b.vy += .11; b.vx *= .985; b.vy *= .985;
+      b.x += b.vx; b.y += b.vy; b.life -= b.decay;
+      ctx.save();
+      ctx.globalAlpha = Math.max(b.life, 0);
+      ctx.shadowColor = b.color; ctx.shadowBlur = 9;
+      ctx.fillStyle = b.twinkle && Math.random() < .12 ? '#FFF4E4' : b.color;
+      ctx.beginPath(); ctx.arc(b.x, b.y, Math.max(b.r * b.life, .4), 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+      if (b.life > 0 && b.y < innerHeight + 60) next.push(b);
+      return;
+    }
+    // default: confetti
+    b.vy += .28;                 // gravity
+    b.vx *= .992;                // air drag
+    b.x += b.vx; b.y += b.vy; b.rot += b.vr; b.life -= b.decay;
+    ctx.save();
+    ctx.globalAlpha = Math.max(b.life, 0);
+    ctx.translate(b.x, b.y); ctx.rotate(b.rot);
+    ctx.fillStyle = b.color;
+    if (b.ribbon){ ctx.fillRect(-b.w/2, -b.h/2, b.w * .35, b.h * 1.7); }
+    else { ctx.fillRect(-b.w/2, -b.h/2, b.w, b.h * (b.life > .5 ? 1 : .6)); }
+    ctx.restore();
+    if (b.life > 0 && b.y < innerHeight + 80) next.push(b);
+  });
+  bits = next.concat(bits.slice(pre));   // keep mid-frame spawns
+  if (bits.length){ raf = requestAnimationFrame(loop); }
+  else { raf = null; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+}
+
+/* ---- fireworks: rockets up, radial spark bursts ---- */
+const FW_COLORS = ['#FF2E7E','#FF7A1A','#C7F04A','#FFC53D','#FF6B4A','#FFF4E4'];
+function explode(x, y, color){
+  const n = 56 + (Math.random() * 30 | 0);
+  for (let i = 0; i < n; i++){
+    const a = (i / n) * Math.PI * 2 + Math.random() * .12;
+    const sp = 2 + Math.random() * 5.2;
+    bits.push({ kind:'spark', x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
+      r:2.4 + Math.random()*2.2, color: Math.random() < .82 ? color : '#FFF4E4',
+      life:1, decay:.011 + Math.random()*.012, twinkle:true });
+  }
+  if (!raf) raf = requestAnimationFrame(loop);
+}
+function rocket(){
+  bits.push({ kind:'rocket', x:innerWidth*(.14 + Math.random()*.72), y:innerHeight + 12,
+    vx:(Math.random()-.5)*1.7, vy:-(9.5 + Math.random()*3.4),
+    ty:innerHeight*(.2 + Math.random()*.26),
+    color:FW_COLORS[(Math.random()*FW_COLORS.length)|0] });
+  if (!raf) raf = requestAnimationFrame(loop);
+}
+function launchFireworks(count = 8, span = 4200){
+  if (REDUCED) return;
+  for (let i = 0; i < count; i++)
+    setTimeout(rocket, (i * span / count) + Math.random() * 260);
+}
+
+/* ---- blooming flowers ---- */
+const bloomBox = document.getElementById('bloomBox');
+const PETAL_COLORS = ['#FF2E7E','#FF7A1A','#C7F04A','#FFF4E4','#FFC53D'];
+const CORE_COLORS  = ['#26111F','#FFC53D','#FF2E7E','#FF7A1A'];
+const BLOOM_SPOTS = [
+  { left:'4%',  top:'14%' }, { right:'6%',  top:'20%' },
+  { left:'7%',  bottom:'16%' }, { right:'9%', bottom:'13%' },
+  { left:'40%', top:'5%' }, { right:'32%', bottom:'5%' },
+];
+function bloomFlowers(){
+  if (REDUCED) return;
+  BLOOM_SPOTS.forEach((spot, k) => {
+    const f = document.createElement('div');
+    f.className = 'flower';
+    f.style.setProperty('--s', (64 + Math.random()*52|0) + 'px');
+    Object.entries(spot).forEach(([prop,val]) => f.style[prop] = val);
+    const pc = PETAL_COLORS[(Math.random()*PETAL_COLORS.length)|0];
+    f.style.setProperty('--pc', pc);
+    f.style.setProperty('--cc', CORE_COLORS[(Math.random()*CORE_COLORS.length)|0]);
+    for (let i = 0; i < 6; i++){
+      const pt = document.createElement('span');
+      pt.className = 'petal';
+      pt.style.setProperty('--r', (i*60 + (k%2)*30) + 'deg');
+      pt.style.setProperty('--d', (k*90 + i*70) + 'ms');
+      f.appendChild(pt);
+    }
+    const core = document.createElement('span');
+    core.className = 'core';
+    core.style.animationDelay = (k*90 + 480) + 'ms';
+    f.appendChild(core);
+    bloomBox.appendChild(f);
+  });
+  setTimeout(() => bloomBox.classList.add('fade'), 6500);
+  setTimeout(() => { bloomBox.classList.remove('fade'); bloomBox.innerHTML = ''; }, 8200);
+}
+
+/* Multi-cannon burst for the big moment */
+function bigBurst(){
+  burst(innerWidth * .5, innerHeight * .42, 130, 1.25);
+  setTimeout(() => burst(innerWidth * .12, innerHeight * .6, 70, 1.05), 260);
+  setTimeout(() => burst(innerWidth * .88, innerHeight * .6, 70, 1.05), 420);
+  setTimeout(() => burst(innerWidth * .5, innerHeight * .18, 80, 1.3), 700);
+}
+
+/* ============================================================
+   CELEBRATION OVERLAY
+   ============================================================ */
+const overlay = document.getElementById('celebrate');
+function celebrate(withOverlay = true){
+  if (withOverlay){
+    overlay.classList.add('on');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  bigBurst();
+  launchFireworks(6, 3000);
+  if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+}
+function dismissCelebrate(){
+  overlay.classList.remove('on');
+  overlay.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+document.getElementById('closeCelebrate').addEventListener('click', dismissCelebrate);
+overlay.addEventListener('click', e => { if (e.target === overlay) dismissCelebrate(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') dismissCelebrate(); });
+document.getElementById('replayBtn').addEventListener('click', () => { bigBurst(); toast('Again? Again. 🎊'); });
+
+/* ============================================================
+   SCROLL-TRIGGERED REVEALS
+   ============================================================ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting){
+      // small stagger for siblings inside a grid
+      const sibs = [...e.target.parentElement.children].filter(n => n.classList.contains('reveal'));
+      const idx = sibs.indexOf(e.target);
+      e.target.style.transitionDelay = Math.min(idx * 70, 350) + 'ms';
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: .16, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+
+/* ============================================================
+   LETTER — word-by-word typewriter reveal
+   ============================================================ */
+const letterBody = document.getElementById('letterBody');
+(function prepareLetter(){
+  // Wrap every word in a span so we can stagger them. Preserves your text exactly.
+  letterBody.querySelectorAll('p').forEach(p => {
+    const words = p.textContent.trim().split(/\s+/);
+    p.textContent = '';
+    words.forEach((w, i) => {
+      const s = document.createElement('span');
+      s.className = 'word'; s.textContent = w; s.style.transitionDelay = (i * 34) + 'ms';
+      p.appendChild(s);
+      p.appendChild(document.createTextNode(' '));
+    });
+  });
+  const cur = document.createElement('span');
+  cur.className = 'cursor'; cur.id = 'typeCursor';
+  letterBody.lastElementChild.appendChild(cur);
+})();
+
+const letterIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    letterBody.querySelectorAll('.word').forEach(w => w.classList.add('on'));
+    // cursor stops blinking once the "typing" finishes
+    const total = letterBody.querySelectorAll('.word').length * 34 + 900;
+    setTimeout(() => { const c = document.getElementById('typeCursor'); if (c) c.style.display = 'none'; }, total);
+    letterIO.unobserve(e.target);
+  });
+}, { threshold: .25 });
+letterIO.observe(letterBody);
+
+/* ============================================================
+   ENVELOPE — open sequence: seal pop → flap flip → letter lift
+   → fireworks + blooming flowers → letter card blooms in
+   ============================================================ */
+const envScene  = document.getElementById('envScene');
+const envelope  = document.getElementById('envelope');
+const letterCard = document.getElementById('letterCard');
+let envOpened = false;
+
+function openEnvelope(){
+  if (envOpened) return;
+  envOpened = true;
+  envScene.classList.add('opening');
+  setTimeout(() => { launchFireworks(9, 4600); bloomFlowers(); }, 1450);
+  setTimeout(() => letterCard.classList.remove('sealed'), 1750);
+  setTimeout(() => letterCard.classList.add('bloom-in'), 1780);
+  setTimeout(() => envScene.classList.add('gone'), 2450);
+  if (navigator.vibrate) navigator.vibrate(30);
+}
+document.getElementById('envOpen').addEventListener('click', openEnvelope);
+envelope.addEventListener('click', openEnvelope);
+envelope.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openEnvelope(); }
+});
+
+/* ============================================================
+   BADDIE EDITS — fullscreen 9:16 chain player
+   edit1 → edit2 → edit3 → back to the page.
+   Missing file? styled placeholder auto-advances after 4s.
+   ============================================================ */
+const EDITS = [
+  '/videos/edit1.mp4',   // ← her first edit  (9:16 mp4)
+  '/videos/edit2.mp4',   // ← second edit
+  '/videos/edit3.mp4',   // ← third edit
+];
+const PH_SECONDS = 4;   // placeholder dwell time when a file is missing
+
+const emBox   = document.getElementById('editsMode');
+const emStage = document.getElementById('emStage');
+const emVideo = document.getElementById('emVideo');
+const emNow   = document.getElementById('emNow');
+const emFill  = document.getElementById('emFill');
+const emPh    = document.getElementById('emPh');
+const emPhLab = document.getElementById('emPhLabel');
+const emHint  = document.getElementById('emHint');
+const emMute  = document.getElementById('emMute');
+let emIndex = 0, emOpen = false, emPhTimer = null;
+
+function emSetBar(pct, glide){
+  emFill.classList.toggle('glide', !!glide);
+  if (!glide) void emFill.offsetWidth;           // restart transition cleanly
+  emFill.style.width = pct + '%';
+}
+function emClearPh(){ clearTimeout(emPhTimer); emPhTimer = null; }
+
+function emLoad(i){
+  emIndex = i;
+  emClearPh();
+  emNow.textContent = String(i + 1).padStart(2, '0');
+  emPhLab.textContent = 'EDIT ' + String(i + 1).padStart(2, '0');
+  emPh.querySelector('small').textContent = 'placeholder · add edit' + (i + 1) + '.mp4';
+  emHint.textContent = 'now playing · edit ' + (i + 1) + ' of ' + EDITS.length;
+  emStage.classList.remove('live');
+  emStage.classList.remove('swap'); void emStage.offsetWidth; emStage.classList.add('swap');
+  emSetBar(0, false);
+
+  emVideo.src = EDITS[i];
+  emVideo.muted = false;                          // she tapped to get here → sound is allowed
+  emMute.classList.add('unmuted');
+  emVideo.load();
+  emVideo.play().catch(() => {                    // autoplay refused → retry muted
+    emVideo.muted = true;
+    emMute.classList.remove('unmuted');
+    emVideo.play().catch(() => {});               // still nothing → 'error' handles placeholder
+  });
+}
+
+function emPlaceholderMode(){
+  if (!emOpen) return;                 // ignore stray error events after exit
+  // no file at this index: show the film-strip card, fill the bar over 4s, advance
+  emStage.classList.remove('live');
+  emSetBar(0, false);
+  requestAnimationFrame(() => requestAnimationFrame(() => emSetBar(100, true)));
+  emPhTimer = setTimeout(emNext, PH_SECONDS * 1000);
+}
+function emNext(){
+  emClearPh();
+  if (emIndex + 1 < EDITS.length) emLoad(emIndex + 1);
+  else emExit(true);                              // all three done → back to the page
+}
+function emExit(finished){
+  emClearPh();
+  emVideo.pause();
+  emVideo.removeAttribute('src'); emVideo.load();
+  emOpen = false;
+  emBox.classList.remove('on');
+  emBox.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (finished) toast('that\'s the full reel 💅 back to your birthday');
+}
+
+emVideo.addEventListener('playing', () => { emClearPh(); emStage.classList.add('live'); });
+emVideo.addEventListener('error', emPlaceholderMode);
+emVideo.addEventListener('timeupdate', () => {
+  if (emStage.classList.contains('live') && emVideo.duration)
+    emSetBar(emVideo.currentTime / emVideo.duration * 100, false);
+});
+emVideo.addEventListener('ended', emNext);
+
+emMute.addEventListener('click', () => {
+  emVideo.muted = !emVideo.muted;
+  emMute.classList.toggle('unmuted', !emVideo.muted);
+});
+
+document.getElementById('editsCta').addEventListener('click', () => {
+  emOpen = true;
+  emBox.classList.add('on');
+  emBox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  emLoad(0);
+});
+document.getElementById('editsClose').addEventListener('click', () => emExit(false));
+addEventListener('keydown', e => { if (e.key === 'Escape' && emOpen) emExit(false); });
+
+/* ============================================================
+   PHOTO STREAM — vertical scroll maps to horizontal glide
+   (lerped every frame so it feels buttery, not 1:1 jerky)
+   ============================================================ */
+const stripSec  = document.getElementById('strip');
+const stripTrk  = document.getElementById('stripTrack');
+const stripFill = document.getElementById('stripFill');
+const stripNow  = document.getElementById('stripNow');
+let stripMax = 0, stripCur = 0, stripLastIdx = -1;
+const STRIP_N = document.getElementById('stripTrack').children.length;
+document.getElementById('stripTotal').textContent = STRIP_N;
+
+function stripMeasure(){ stripMax = Math.max(0, stripTrk.scrollWidth - innerWidth); }
+stripMeasure();
+addEventListener('resize', stripMeasure);
+addEventListener('load', stripMeasure);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(stripMeasure);
+
+function stripTick(){
+  requestAnimationFrame(stripTick);
+  if (REDUCED) return;
+  const r = stripSec.getBoundingClientRect();
+  if (r.bottom < -300 || r.top > innerHeight + 300) return;   // save battery off-screen
+  const total = stripSec.offsetHeight - innerHeight;
+  const p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
+  const target = p * stripMax;
+  stripCur += (target - stripCur) * .11;                      // smoothing
+  if (Math.abs(target - stripCur) < .05) stripCur = target;
+  stripTrk.style.transform = 'translate3d(' + (-stripCur).toFixed(2) + 'px,0,0)';
+  stripFill.style.width = (p * 100).toFixed(2) + '%';
+  const idx = Math.min(STRIP_N, Math.floor(p * STRIP_N) + 1);
+  if (idx !== stripLastIdx){ stripLastIdx = idx; stripNow.textContent = String(idx).padStart(2, '0'); }
+}
+requestAnimationFrame(stripTick);
+
+/* ============================================================
+   MUSIC PLAYER
+   ============================================================ */
+const audio   = document.getElementById('audio');
+const playBtn = document.getElementById('playBtn');
+const player  = document.getElementById('player');
+const pTitle  = document.getElementById('pTitle');
+const pFill   = document.getElementById('pFill');
+const pBar    = document.getElementById('pBar');
+const iPlay   = document.getElementById('iconPlay');
+const iPause  = document.getElementById('iconPause');
+
+audio.src = CONFIG.song;
+let playing = false;
+
+function setUI(state){
+  playing = state;
+  iPlay.style.display  = state ? 'none' : 'block';
+  iPause.style.display = state ? 'block' : 'none';
+  playBtn.setAttribute('aria-pressed', String(state));
+  player.classList.toggle('playing', state);
+  player.classList.remove('hint');
+  pTitle.textContent = state ? CONFIG.songName : 'Paused · tap to play';
+}
+
+playBtn.addEventListener('click', async () => {
+  if (playing){ audio.pause(); setUI(false); return; }
+  try {
+    audio.volume = 0;                       // start muted (browser-friendly)
+    await audio.play();
+    setUI(true);
+    // gentle fade-in to ~65% over 1.2s so it isn't jarring
+    let v = 0;
+    const fade = setInterval(() => {
+      v += .05; audio.volume = Math.min(v, .65);
+      if (v >= .65) clearInterval(fade);
+    }, 90);
+    toast('🎧 Now playing — happy birthday, Javaria');
+  } catch (err){
+    pTitle.textContent = "Add an mp3 to /audio/song.mp3";
+    toast("Drop her song at " + CONFIG.song + " and I'll play it 🎵");
+  }
+});
+
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration) pFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+});
+pBar.addEventListener('click', e => {
+  if (!audio.duration) return;
+  const r = pBar.getBoundingClientRect();
+  audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+});
+
+/* ============================================================
+   BALLOON SURPRISE + TOAST
+   ============================================================ */
+const MESSAGES = [
+  "19 looks good on you 💖",
+  "You're officially a late teen now 😌",
+  "Cake first, everything else later 🎂",
+  "Made this whole page just for you ✦",
+  "Another year of you being the best sister 🌸",
+  "Okay that confetti was for you 🎊",
+];
+const balloonsBox = document.getElementById('balloons');
+const toastEl = document.getElementById('toast');
+let toastTimer;
+
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+}
+
+document.getElementById('balloonBtn').addEventListener('click', e => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  burst(rect.left + rect.width/2, rect.top, 45, .85);
+
+  const skins = ['var(--pink)','var(--orange)','var(--lime)','#5B2BD9','#FFC53D'];
+  for (let i = 0; i < 5; i++){
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.style.background = skins[i % skins.length];
+    b.style.left = (rect.left + rect.width/2 - 23 + (Math.random()*130 - 65)) + 'px';
+    b.style.animationDelay = (i * 130) + 'ms';
+    b.style.animationDuration = (2.9 + Math.random()*1.3) + 's';
+    balloonsBox.appendChild(b);
+    setTimeout(() => b.remove(), 4600);
+  }
+  toast(MESSAGES[(Math.random()*MESSAGES.length)|0]);
+  if (navigator.vibrate) navigator.vibrate(25);
+});
+
+/* Tiny extra: double-tap the big "19th" for a secret burst */
+document.querySelector('.nineteen').addEventListener('click', e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  burst(r.left + r.width/2, r.top + r.height/2, 60, .9);
+});
+</script>
+</body>
+</html>
